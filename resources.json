@@ -1,1 +1,40 @@
 
+[
+  {
+    "title": "MAC 201 Past Paper 2020",
+    "unitCode": "MAC 201",
+    "category": "Past Papers",
+    "examYear": 2020,
+    "academicYear": "Year 2",
+    "semester": "Semester 1",
+    "description": "MAC 201 examination paper for revision.",
+    "fileType": "PDF",
+    "filePath": "past-papers/MAC-201/MAC-201-2020.pdf",
+    "keywords": ["mathematics", "revision", "examination"]
+  },
+  {
+    "title": "MAC 201 Past Paper 2023",
+    "unitCode": "MAC 201",
+    "category": "Past Papers",
+    "examYear": 2023,
+    "academicYear": "Year 2",
+    "semester": "Semester 1",
+    "description": "MAC 201 examination paper for revision.",
+    "fileType": "PDF",
+    "filePath": "past-papers/MAC-201/MAC-201-2023.pdf",
+    "keywords": ["mathematics", "revision", "examination"]
+  },
+  {
+    "title": "MAC 201 Past Paper 2025",
+    "unitCode": "MAC 201",
+    "category": "Past Papers",
+    "examYear": 2025,
+    "academicYear": "Year 2",
+    "semester": "Semester 1",
+    "description": "MAC 201 examination paper for revision.",
+    "fileType": "PDF",
+    "filePath": "past-papers/MAC-201/MAC-201-2025.pdf",
+    "keywords": ["mathematics", "revision", "examination"]
+  }
+]
+
