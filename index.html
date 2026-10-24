@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Search academic resources for Actuarial Science students at Tom Mbiya University.">
+  <title>Resource Search | Actuarial Science Hub</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: #102b50;
+      color: white;
+      padding: 28px 18px;
+      text-align: center;
+    }
+
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; color: #d8e5f5; }
+
+    main {
+      max-width: 1050px;
+      margin: 28px auto;
+      padding: 0 16px;
+    }
+
+    .search-panel, .result {
+      background: white;
+      border: 1px solid #dce3ed;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .search-panel {
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px #102b5010;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid #2563eb;
+      outline-offset: 1px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    button {
+      margin-top: 12px;
+      background: #1559a6;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover { background: #103f78; }
+
+    #summary { color: #536176; margin: 16px 0; }
+
+    #results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .result h3 { margin: 0 0 10px; color: #123c70; }
+    .result p { line-height: 1.5; overflow-wrap: anywhere; }
+
+    .tag {
+      display: inline-block;
+      background: #e8f0fb;
+      color: #16477f;
+      padding: 5px 8px;
+      border-radius: 5px;
+      font-size: 12px;
+      margin: 2px 4px 2px 0;
+    }
+
+    .file-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #1559a6;
+      font-weight: bold;
+    }
+
+    .empty {
+      background: white;
+      padding: 28px;
+      border-radius: 10px;
+      text-align: center;
+      color: #536176;
+      grid-column: 1 / -1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #536176;
+    }
+
+    @media (max-width: 650px) {
+      .search-row, .filters, #results {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Actuarial Science Hub</h1>
+    <p>Tom Mbiya University | Academic Resource Centre</p>
+  </header>
+
+  <main>
+    <section class="search-panel">
+      <h2>Find Academic Resources</h2>
+      <p>Search notes, past papers, unit codes, semesters and more.</p>
+
+      <label for="query">Search keywords</label>
+      <div class="search-row">
+        <input
+          id="query"
+          type="search"
+          placeholder="e.g. ACT 201, probability, 2025..."
+          autocomplete="off"
+        >
+
+        <select id="category">
+          <option value="">All resources</option>
+          <option>Lecture Notes</option>
+          <option>Past Papers</option>
+          <option>Exam Timetables</option>
+          <option>Notices</option>
+          <option>Internships and Careers</option>
+          <option>Research Projects</option>
+          <option>Datasets</option>
+        </select>
+      </div>
+
+      <div class="filters">
+        <select id="academicYear">
+          <option value="">All academic years</option>
+        </select>
+
+        <select id="semester">
+          <option value="">All semesters</option>
+          <option>Semester 1</option>
+          <option>Semester 2</option>
+          <option>Semester 3</option>
+        </select>
+      </div>
+
+      <button id="clear" type="button">Clear Search</button>
+    </section>
+
+    <p id="summary" aria-live="polite">Loading resources...</p>
+    <section id="results" aria-label="Search results"></section>
+  </main>
+
+  <footer>
+    Actuarial Science Hub | Tom Mbiya University
+  </footer>
+
+  <script>
+    /*
+      ADMINISTRATORS: Add approved resources to this catalogue.
+      The file paths must match the files in your repository.
+    */
+    const resources = [
+      /*
+      {
+        title: "Probability and Statistics Notes",
+        unitCode: "ACT 201",
+        academicYear: "Year 2",
+        semester: "Semester 1",
+        category: "Lecture Notes",
+        description: "Probability distributions, expectation and variance.",
+        fileType: "PDF",
+        filePath: "notes/year-2/semester-1/act-201.pdf"
+      },
+      {
+        title: "Financial Mathematics Examination",
+        unitCode: "ACT 302",
+        academicYear: "Year 3",
+        semester: "Semester 2",
+        category: "Past Papers",
+        description: "Previous examination paper for revision.",
+        fileType: "PDF",
+        filePath: "past-papers/year-3/act-302-2025.pdf"
+      }
+      */
+    ];
+
+    const queryInput = document.getElementById("query");
+    const categoryInput = document.getElementById("category");
+    const yearInput = document.getElementById("academicYear");
+    const semesterInput = document.getElementById("semester");
+    const resultsElement = document.getElementById("results");
+    const summaryElement = document.getElementById("summary");
+
+    function normalize(value) {
+      return String(value ?? "")
+        .normalize("NFKC")
+        .toLowerCase()
+        .trim();
+    }
+
+    function populateYears() {
+      const years = [...new Set(
+        resources.map(r => r.academicYear).filter(Boolean)
+      )].sort();
+
+      years.forEach(year => {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        yearInput.appendChild(option);
+      });
+    }
+
+    function addText(parent, tag, text, className) {
+      const element = document.createElement(tag);
+      element.textContent = text ?? "";
+      if (className) element.className = className;
+      parent.appendChild(element);
+      return element;
+    }
+
+    function renderResults() {
+      const terms = normalize(queryInput.value)
+        .split(/\s+/)
+        .filter(Boolean);
+
+      const category = categoryInput.value;
+      const year = yearInput.value;
+      const semester = semesterInput.value;
+
+      const matches = resources.filter(resource => {
+        const searchable = normalize([
+          resource.title,
+          resource.unitCode,
+          resource.academicYear,
+          resource.semester,
+          resource.description,
+          resource.category,
+          resource.fileType,
+          resource.filePath
+        ].join(" "));
+
+        return terms.every(term => searchable.includes(term))
+          && (!category || resource.category === category)
+          && (!year || resource.academicYear === year)
+          && (!semester || resource.semester === semester);
+      });
+
+      resultsElement.replaceChildren();
+
+      summaryElement.textContent =
+        `${matches.length} resource${matches.length === 1 ? "" : "s"} found`;
+
+      if (!matches.length) {
+        const message = resources.length
+          ? "No matching resources. Try different keywords or filters."
+          : "No resources have been published yet. Please check again later.";
+
+        addText(resultsElement, "div", message, "empty");
+        return;
+      }
+
+      matches.forEach(resource => {
+        const card = document.createElement("article");
+        card.className = "result";
+
+        addText(card, "h3", resource.title);
+        addText(card, "p",
+          `${resource.unitCode || "General"} | ` +
+          `${resource.academicYear || "Year not specified"} | ` +
+          `${resource.semester || "Semester not specified"}`
+        );
+
+        addText(card, "span", resource.category, "tag");
+
+        if (resource.fileType) {
+          addText(card, "span", resource.fileType, "tag");
+        }
+
+        addText(card, "p", resource.description || "No description provided.");
+
+        const link = document.createElement("a");
+        link.className = "file-link";
+        link.href = resource.filePath;
+        link.textContent = "Open / Download";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        card.appendChild(link);
+        resultsElement.appendChild(card);
+      });
+    }
+
+    [queryInput, categoryInput, yearInput, semesterInput]
+      .forEach(input => {
+        input.addEventListener("input", renderResults);
+        input.addEventListener("change", renderResults);
+      });
+
+    document.getElementById("clear").addEventListener("click", () => {
+      queryInput.value = "";
+      categoryInput.value = "";
+      yearInput.value = "";
+      semesterInput.value = "";
+      renderResults();
+      queryInput.focus();
+    });
+
+    populateYears();
+    renderResults();
+  </script>
+</body>
+</html>
