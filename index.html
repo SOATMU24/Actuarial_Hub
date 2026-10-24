@@ -3,133 +3,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Search academic resources for Actuarial Science students at Tom Mbiya University.">
-  <title>Resource Search | Actuarial Science Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Academic resource centre for Actuarial Science students at Tom Mbiya University.">
+  <title>Actuarial Science Hub | Tom Mbiya University</title>
 
   <style>
+    :root {
+      --navy: #102b50;
+      --blue: #1559a6;
+      --light: #f3f6fb;
+      --border: #dce3ed;
+      --text: #172033;
+      --muted: #64748b;
+      --white: #fff;
+    }
+
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #172033;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.5;
     }
 
     header {
-      background: #102b50;
+      background: var(--navy);
       color: white;
-      padding: 28px 18px;
       text-align: center;
+      padding: 34px 16px;
     }
 
-    header h1 { margin: 0 0 8px; }
+    header h1 { margin: 0 0 8px; font-size: 30px; }
     header p { margin: 0; color: #d8e5f5; }
 
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      padding: 13px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
     main {
-      max-width: 1050px;
+      max-width: 1100px;
       margin: 28px auto;
       padding: 0 16px;
     }
 
-    .search-panel, .result {
-      background: white;
-      border: 1px solid #dce3ed;
+    .panel, .resource-card {
+      background: var(--white);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 18px;
     }
 
-    .search-panel {
-      margin-bottom: 20px;
-      box-shadow: 0 4px 15px #102b5010;
+    .panel {
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 14px #102b5008;
     }
 
-    .search-row {
+    h2 { margin-top: 0; }
+
+    .filters {
       display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 12px;
-      margin-top: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: bold;
     }
 
     input, select, button {
       width: 100%;
-      padding: 13px;
+      min-height: 44px;
+      padding: 11px 12px;
+      font: inherit;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
-      font: inherit;
     }
 
-    input:focus, select:focus {
+    input:focus, select:focus, button:focus-visible, a:focus-visible {
       outline: 2px solid #2563eb;
-      outline-offset: 1px;
+      outline-offset: 2px;
     }
 
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 12px;
+    .search-wrap { position: relative; }
+
+    #suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
     }
 
-    button {
-      margin-top: 12px;
-      background: #1559a6;
-      color: white;
-      border: none;
+    .suggestion {
+      width: auto;
+      min-height: 34px;
+      padding: 6px 11px;
+      border-radius: 20px;
+      background: #e8f0fb;
+      color: var(--blue);
+      border: 1px solid #cbdcf4;
       cursor: pointer;
-      font-weight: bold;
+      font-size: 13px;
     }
 
-    button:hover { background: #103f78; }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
 
-    #summary { color: #536176; margin: 16px 0; }
+    .actions button { cursor: pointer; font-weight: bold; }
+
+    #clear {
+      background: white;
+      color: var(--navy);
+    }
+
+    #summary {
+      color: var(--muted);
+      margin: 18px 0 12px;
+    }
 
     #results {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 16px;
     }
 
-    .result h3 { margin: 0 0 10px; color: #123c70; }
-    .result p { line-height: 1.5; overflow-wrap: anywhere; }
+    .resource-card { padding: 18px; min-width: 0; }
+    .resource-card h3 { margin: 0 0 10px; color: var(--navy); }
+    .resource-card p { overflow-wrap: anywhere; }
 
     .tag {
       display: inline-block;
       background: #e8f0fb;
       color: #16477f;
-      padding: 5px 8px;
       border-radius: 5px;
-      font-size: 12px;
+      padding: 4px 8px;
       margin: 2px 4px 2px 0;
+      font-size: 12px;
     }
 
-    .file-link {
+    .download {
       display: inline-block;
       margin-top: 8px;
-      color: #1559a6;
+      color: var(--blue);
       font-weight: bold;
     }
 
     .empty {
-      background: white;
-      padding: 28px;
-      border-radius: 10px;
-      text-align: center;
-      color: #536176;
       grid-column: 1 / -1;
+      background: white;
+      border-radius: 10px;
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
     }
+
+    .notice { color: var(--muted); font-size: 13px; }
 
     footer {
+      margin-top: 40px;
+      padding: 24px 16px;
+      background: var(--navy);
+      color: white;
       text-align: center;
-      padding: 24px;
-      color: #536176;
     }
 
+    footer a { color: white; }
+
     @media (max-width: 650px) {
-      .search-row, .filters, #results {
-        grid-template-columns: 1fr;
-      }
+      .filters, #results { grid-template-columns: 1fr; }
+      header h1 { font-size: 25px; }
+      .actions { flex-direction: column; }
     }
   </style>
 </head>
@@ -140,210 +204,390 @@
     <p>Tom Mbiya University | Academic Resource Centre</p>
   </header>
 
+  <nav aria-label="Main navigation">
+    <a href="#resources">Resources</a>
+    <a href="#careers">Careers</a>
+    <a href="#research">Research</a>
+    <a href="#support">Academic Support</a>
+  </nav>
+
   <main>
-    <section class="search-panel">
+    <section class="panel" id="resources">
       <h2>Find Academic Resources</h2>
-      <p>Search notes, past papers, unit codes, semesters and more.</p>
+      <p>Search notes, past papers, unit codes, examination years and more.</p>
 
-      <label for="query">Search keywords</label>
-      <div class="search-row">
-        <input
-          id="query"
-          type="search"
-          placeholder="e.g. ACT 201, probability, 2025..."
-          autocomplete="off"
-        >
-
-        <select id="category">
-          <option value="">All resources</option>
-          <option>Lecture Notes</option>
-          <option>Past Papers</option>
-          <option>Exam Timetables</option>
-          <option>Notices</option>
-          <option>Internships and Careers</option>
-          <option>Research Projects</option>
-          <option>Datasets</option>
-        </select>
+      <label for="query">Search by keyword or unit code</label>
+      <div class="search-wrap">
+        <input id="query" type="search"
+          placeholder="e.g. MAC 201, probability, regression..."
+          autocomplete="off">
+        <div id="suggestions" aria-label="Search suggestions"></div>
       </div>
 
       <div class="filters">
-        <select id="academicYear">
-          <option value="">All academic years</option>
-        </select>
+        <div>
+          <label for="category">Resource type</label>
+          <select id="category">
+            <option value="">All resource types</option>
+          </select>
+        </div>
 
-        <select id="semester">
-          <option value="">All semesters</option>
-          <option>Semester 1</option>
-          <option>Semester 2</option>
-          <option>Semester 3</option>
-        </select>
+        <div>
+          <label for="unit">Unit code</label>
+          <select id="unit">
+            <option value="">All units</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="examYear">Examination year</label>
+          <select id="examYear">
+            <option value="">All available years</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="semester">Semester</label>
+          <select id="semester">
+            <option value="">All semesters</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="academicYear">Academic year of study</label>
+          <select id="academicYear">
+            <option value="">All years of study</option>
+          </select>
+        </div>
       </div>
 
-      <button id="clear" type="button">Clear Search</button>
+      <div class="actions">
+        <button type="button" id="searchButton">Search Resources</button>
+        <button type="button" id="clear">Clear Filters</button>
+      </div>
     </section>
 
-    <p id="summary" aria-live="polite">Loading resources...</p>
-    <section id="results" aria-label="Search results"></section>
+    <p id="summary" aria-live="polite">Loading resource catalogue...</p>
+    <section id="results" aria-label="Resource search results"></section>
+
+    <section class="panel" id="careers">
+      <h2>Internships and Careers</h2>
+      <p>Find attachment opportunities, internships and actuarial career resources using the search above.</p>
+    </section>
+
+    <section class="panel" id="research">
+      <h2>Research and Projects</h2>
+      <p>Search for project guidance, research materials and approved datasets using the search above.</p>
+    </section>
+
+    <section class="panel" id="support">
+      <h2>Student Academic Support</h2>
+      <p>For academic assistance, contact the course executive through the officially designated support channel.</p>
+      <p class="notice">A private support-request form can be connected here. Do not submit personal academic records through a public repository.</p>
+    </section>
   </main>
 
   <footer>
-    Actuarial Science Hub | Tom Mbiya University
+    <p>Actuarial Science Hub | Tom Mbiya University</p>
+    <p>Academic resources for student learning and development.</p>
   </footer>
 
   <script>
-    /*
-      ADMINISTRATORS: Add approved resources to this catalogue.
-      The file paths must match the files in your repository.
-    */
-    const resources = [
-      /*
-      {
-        title: "Probability and Statistics Notes",
-        unitCode: "ACT 201",
-        academicYear: "Year 2",
-        semester: "Semester 1",
-        category: "Lecture Notes",
-        description: "Probability distributions, expectation and variance.",
-        fileType: "PDF",
-        filePath: "notes/year-2/semester-1/act-201.pdf"
-      },
-      {
-        title: "Financial Mathematics Examination",
-        unitCode: "ACT 302",
-        academicYear: "Year 3",
-        semester: "Semester 2",
-        category: "Past Papers",
-        description: "Previous examination paper for revision.",
-        fileType: "PDF",
-        filePath: "past-papers/year-3/act-302-2025.pdf"
-      }
-      */
-    ];
+    const DATA_FILE = "resources.json";
 
     const queryInput = document.getElementById("query");
     const categoryInput = document.getElementById("category");
-    const yearInput = document.getElementById("academicYear");
+    const unitInput = document.getElementById("unit");
+    const examYearInput = document.getElementById("examYear");
     const semesterInput = document.getElementById("semester");
-    const resultsElement = document.getElementById("results");
-    const summaryElement = document.getElementById("summary");
+    const academicYearInput = document.getElementById("academicYear");
+    const suggestionsBox = document.getElementById("suggestions");
+    const resultsBox = document.getElementById("results");
+    const summary = document.getElementById("summary");
 
-    function normalize(value) {
+    let resources = [];
+
+    function norm(value) {
       return String(value ?? "")
         .normalize("NFKC")
         .toLowerCase()
         .trim();
     }
 
-    function populateYears() {
-      const years = [...new Set(
-        resources.map(r => r.academicYear).filter(Boolean)
-      )].sort();
-
-      years.forEach(year => {
-        const option = document.createElement("option");
-        option.value = year;
-        option.textContent = year;
-        yearInput.appendChild(option);
-      });
+    function unique(values) {
+      return [...new Set(values.filter(v =>
+        v !== null && v !== undefined && String(v).trim() !== ""
+      ))];
     }
 
-    function addText(parent, tag, text, className) {
-      const element = document.createElement(tag);
-      element.textContent = text ?? "";
-      if (className) element.className = className;
-      parent.appendChild(element);
-      return element;
+    function addOption(select, value, label) {
+      const option = document.createElement("option");
+      option.value = String(value);
+      option.textContent = String(label);
+      select.appendChild(option);
     }
 
-    function renderResults() {
-      const terms = normalize(queryInput.value)
-        .split(/\s+/)
-        .filter(Boolean);
+    function fillSelect(select, placeholder, values, sorter) {
+      const previous = select.value;
+      select.replaceChildren();
+      addOption(select, "", placeholder);
 
+      let list = unique(values);
+      if (sorter) list.sort(sorter);
+      else list.sort((a, b) =>
+        String(a).localeCompare(String(b), undefined, {
+          numeric: true,
+          sensitivity: "base"
+        })
+      );
+
+      list.forEach(value => addOption(select, value, value));
+
+      if (list.some(value => String(value) === previous)) {
+        select.value = previous;
+      }
+    }
+
+    function getAvailableOptions() {
       const category = categoryInput.value;
-      const year = yearInput.value;
-      const semester = semesterInput.value;
+      const unit = unitInput.value;
 
-      const matches = resources.filter(resource => {
-        const searchable = normalize([
-          resource.title,
-          resource.unitCode,
-          resource.academicYear,
-          resource.semester,
-          resource.description,
-          resource.category,
-          resource.fileType,
-          resource.filePath
+      const categoryResources = resources.filter(r =>
+        !category || r.category === category
+      );
+
+      const unitResources = categoryResources.filter(r =>
+        !unit || r.unitCode === unit
+      );
+
+      fillSelect(
+        categoryInput,
+        "All resource types",
+        resources.map(r => r.category)
+      );
+
+      fillSelect(
+        unitInput,
+        "All units",
+        categoryResources.map(r => r.unitCode)
+      );
+
+      // Re-read the selected unit after refreshing its options.
+      const selectedUnit = unitInput.value;
+      const selectedResources = categoryResources.filter(r =>
+        !selectedUnit || r.unitCode === selectedUnit
+      );
+
+      fillSelect(
+        examYearInput,
+        "All available years",
+        selectedResources
+          .filter(r => r.category === "Past Papers" && r.examYear)
+          .map(r => Number(r.examYear)),
+        (a, b) => b - a
+      );
+
+      fillSelect(
+        semesterInput,
+        "All semesters",
+        selectedResources.map(r => r.semester)
+      );
+
+      fillSelect(
+        academicYearInput,
+        "All years of study",
+        selectedResources.map(r => r.academicYear)
+      );
+    }
+
+    function currentMatches() {
+      const terms = norm(queryInput.value).split(/\s+/).filter(Boolean);
+      const category = categoryInput.value;
+      const unit = unitInput.value;
+      const examYear = examYearInput.value;
+      const semester = semesterInput.value;
+      const academicYear = academicYearInput.value;
+
+      return resources.filter(r => {
+        const searchable = norm([
+          r.title, r.unitCode, r.examYear, r.semester,
+          r.academicYear, r.category, r.description,
+          r.fileType, ...(r.keywords || [])
         ].join(" "));
 
         return terms.every(term => searchable.includes(term))
-          && (!category || resource.category === category)
-          && (!year || resource.academicYear === year)
-          && (!semester || resource.semester === semester);
+          && (!category || r.category === category)
+          && (!unit || r.unitCode === unit)
+          && (!examYear || (
+            r.category === "Past Papers" &&
+            Number(r.examYear) === Number(examYear)
+          ))
+          && (!semester || r.semester === semester)
+          && (!academicYear || r.academicYear === academicYear);
       });
+    }
 
-      resultsElement.replaceChildren();
+    function textElement(parent, tag, value, className) {
+      const el = document.createElement(tag);
+      el.textContent = value || "";
+      if (className) el.className = className;
+      parent.appendChild(el);
+      return el;
+    }
 
-      summaryElement.textContent =
+    function renderResults() {
+      resultsBox.replaceChildren();
+      const matches = currentMatches();
+
+      summary.textContent =
         `${matches.length} resource${matches.length === 1 ? "" : "s"} found`;
 
       if (!matches.length) {
-        const message = resources.length
-          ? "No matching resources. Try different keywords or filters."
-          : "No resources have been published yet. Please check again later.";
-
-        addText(resultsElement, "div", message, "empty");
+        textElement(
+          resultsBox, "div",
+          resources.length
+            ? "No matching resources. Try changing your keywords or filters."
+            : "The resource catalogue is empty. Administrators must add approved resources.",
+          "empty"
+        );
         return;
       }
 
-      matches.forEach(resource => {
+      matches.forEach(r => {
         const card = document.createElement("article");
-        card.className = "result";
+        card.className = "resource-card";
 
-        addText(card, "h3", resource.title);
-        addText(card, "p",
-          `${resource.unitCode || "General"} | ` +
-          `${resource.academicYear || "Year not specified"} | ` +
-          `${resource.semester || "Semester not specified"}`
-        );
+        textElement(card, "h3", r.title);
 
-        addText(card, "span", resource.category, "tag");
+        textElement(card, "p", [
+          r.unitCode,
+          r.academicYear,
+          r.semester
+        ].filter(Boolean).join(" | ") || "General resource");
 
-        if (resource.fileType) {
-          addText(card, "span", resource.fileType, "tag");
+        textElement(card, "span", r.category, "tag");
+
+        if (r.examYear) {
+          textElement(card, "span", `Exam: ${r.examYear}`, "tag");
         }
 
-        addText(card, "p", resource.description || "No description provided.");
+        if (r.fileType) {
+          textElement(card, "span", r.fileType, "tag");
+        }
+
+        textElement(card, "p", r.description || "No description available.");
 
         const link = document.createElement("a");
-        link.className = "file-link";
-        link.href = resource.filePath;
-        link.textContent = "Open / Download";
+        link.className = "download";
+        link.href = r.filePath;
+        link.textContent = "Open / Download resource";
         link.target = "_blank";
         link.rel = "noopener noreferrer";
 
         card.appendChild(link);
-        resultsElement.appendChild(card);
+        resultsBox.appendChild(card);
       });
     }
 
-    [queryInput, categoryInput, yearInput, semesterInput]
-      .forEach(input => {
-        input.addEventListener("input", renderResults);
-        input.addEventListener("change", renderResults);
+    function renderSuggestions() {
+      suggestionsBox.replaceChildren();
+
+      const query = norm(queryInput.value);
+      if (!query) return;
+
+      const terms = unique(resources.flatMap(r => [
+        r.unitCode, r.title, ...(r.keywords || [])
+      ]));
+
+      const matches = terms
+        .filter(item => norm(item).includes(query))
+        .slice(0, 6);
+
+      matches.forEach(item => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "suggestion";
+        button.textContent = item;
+
+        button.addEventListener("click", () => {
+          queryInput.value = item;
+          suggestionsBox.replaceChildren();
+          renderResults();
+        });
+
+        suggestionsBox.appendChild(button);
       });
+    }
+
+    function refresh() {
+      getAvailableOptions();
+      renderSuggestions();
+      renderResults();
+    }
+
+    queryInput.addEventListener("input", () => {
+      renderSuggestions();
+      renderResults();
+    });
+
+    [
+      categoryInput, unitInput, examYearInput,
+      semesterInput, academicYearInput
+    ].forEach(select => {
+      select.addEventListener("change", refresh);
+    });
+
+    document.getElementById("searchButton")
+      .addEventListener("click", renderResults);
 
     document.getElementById("clear").addEventListener("click", () => {
       queryInput.value = "";
       categoryInput.value = "";
-      yearInput.value = "";
+      unitInput.value = "";
+      examYearInput.value = "";
       semesterInput.value = "";
-      renderResults();
+      academicYearInput.value = "";
+      refresh();
       queryInput.focus();
     });
 
-    populateYears();
-    renderResults();
+    async function loadResources() {
+      try {
+        const response = await fetch(DATA_FILE);
+
+        if (!response.ok) {
+          throw new Error("Could not load resources.json");
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("The resource catalogue must be a JSON array.");
+        }
+
+        resources = data.filter(r =>
+          r && typeof r.title === "string" &&
+          typeof r.category === "string" &&
+          typeof r.filePath === "string" &&
+          !r.filePath.startsWith("/") &&
+          !r.filePath.includes("..") &&
+          !/^[a-z][a-z0-9+.-]*:/i.test(r.filePath)
+        );
+
+        refresh();
+      } catch (error) {
+        summary.textContent = "Unable to load the resource catalogue.";
+        resultsBox.replaceChildren();
+        textElement(
+          resultsBox, "div",
+          "Check that resources.json exists in the repository root and contains valid JSON.",
+          "empty"
+        );
+        console.error(error);
+      }
+    }
+
+    loadResources();
   </script>
 </body>
 </html>
