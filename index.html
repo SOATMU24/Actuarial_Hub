@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,7 @@
     :root {
       --navy: #102b50;
       --blue: #1559a6;
+      --gold: #e0b34c;
       --light: #f3f6fb;
       --border: #dce3ed;
       --text: #172033;
@@ -31,7 +33,8 @@
       background: var(--navy);
       color: white;
       text-align: center;
-      padding: 34px 16px;
+      padding: 36px 16px;
+      border-bottom: 4px solid var(--gold);
     }
 
     header h1 { margin: 0 0 8px; font-size: 30px; }
@@ -41,8 +44,8 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 18px;
-      padding: 13px;
+      gap: 20px;
+      padding: 14px;
       background: white;
       border-bottom: 1px solid var(--border);
     }
@@ -55,7 +58,7 @@
     }
 
     main {
-      max-width: 1100px;
+      max-width: 1050px;
       margin: 28px auto;
       padding: 0 16px;
     }
@@ -67,78 +70,141 @@
     }
 
     .panel {
-      padding: 22px;
+      padding: 24px;
       margin-bottom: 22px;
       box-shadow: 0 4px 14px #102b5008;
     }
 
-    h2 { margin-top: 0; }
+    h2 { margin-top: 0; color: var(--navy); }
 
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+    .search-panel {
+      padding: 28px;
+      border-top: 5px solid var(--gold);
     }
+
+    .search-panel > p { color: var(--muted); }
 
     label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
+      margin-bottom: 7px;
+      font-size: 14px;
       font-weight: bold;
     }
 
-    input, select, button {
+    input, button {
       width: 100%;
-      min-height: 44px;
-      padding: 11px 12px;
+      min-height: 46px;
+      padding: 12px;
       font: inherit;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
     }
 
-    input:focus, select:focus, button:focus-visible, a:focus-visible {
+    input:focus, button:focus-visible, a:focus-visible {
       outline: 2px solid #2563eb;
       outline-offset: 2px;
     }
 
-    .search-wrap { position: relative; }
+    .search-wrap {
+      position: relative;
+    }
+
+    #query {
+      border: 2px solid var(--blue);
+      font-size: 17px;
+    }
 
     #suggestions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 10px;
+      display: none;
+      position: absolute;
+      z-index: 10;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      box-shadow: 0 8px 22px #102b5020;
+      overflow: hidden;
     }
+
+    #suggestions.show { display: block; }
 
     .suggestion {
-      width: auto;
-      min-height: 34px;
-      padding: 6px 11px;
-      border-radius: 20px;
-      background: #e8f0fb;
-      color: var(--blue);
-      border: 1px solid #cbdcf4;
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 0;
+      background: white;
+      text-align: left;
       cursor: pointer;
-      font-size: 13px;
+      padding: 12px 14px;
+      min-height: 48px;
     }
 
-    .actions {
+    .suggestion:hover, .suggestion:focus {
+      background: #e8f0fb;
+    }
+
+    .suggestion strong { color: var(--navy); }
+    .suggestion small {
+      display: block;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .search-actions {
       display: flex;
       gap: 10px;
+      margin-top: 14px;
+    }
+
+    .primary {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: white;
+      color: var(--navy);
+      cursor: pointer;
+    }
+
+    details {
+      margin-top: 20px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    summary {
+      color: var(--blue);
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
       margin-top: 16px;
     }
 
-    .actions button { cursor: pointer; font-weight: bold; }
-
-    #clear {
+    select {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
       background: white;
-      color: var(--navy);
+      font: inherit;
     }
 
     #summary {
       color: var(--muted);
-      margin: 18px 0 12px;
+      margin: 20px 0 12px;
     }
 
     #results {
@@ -187,12 +253,11 @@
       text-align: center;
     }
 
-    footer a { color: white; }
-
     @media (max-width: 650px) {
-      .filters, #results { grid-template-columns: 1fr; }
+      #results, .filters { grid-template-columns: 1fr; }
       header h1 { font-size: 25px; }
-      .actions { flex-direction: column; }
+      .search-panel { padding: 19px; }
+      .search-actions { flex-direction: column; }
     }
   </style>
 </head>
@@ -211,59 +276,71 @@
   </nav>
 
   <main>
-    <section class="panel" id="resources">
-      <h2>Find Academic Resources</h2>
-      <p>Search notes, past papers, unit codes, examination years and more.</p>
+    <section class="panel search-panel" id="resources">
+      <h2>Find Your Academic Resources</h2>
+      <p>Enter a complete paper code or start typing to see available matches.</p>
 
-      <label for="query">Search by keyword or unit code</label>
+      <label for="query">Paper code or keyword</label>
       <div class="search-wrap">
-        <input id="query" type="search"
-          placeholder="e.g. MAC 201, probability, regression..."
-          autocomplete="off">
-        <div id="suggestions" aria-label="Search suggestions"></div>
+        <input
+          id="query"
+          type="search"
+          placeholder="e.g. MAC-102-2025"
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-controls="suggestions"
+        >
+        <div id="suggestions" role="listbox" aria-label="Matching resources"></div>
       </div>
 
-      <div class="filters">
-        <div>
-          <label for="category">Resource type</label>
-          <select id="category">
-            <option value="">All resource types</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="unit">Unit code</label>
-          <select id="unit">
-            <option value="">All units</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="examYear">Examination year</label>
-          <select id="examYear">
-            <option value="">All available years</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="semester">Semester</label>
-          <select id="semester">
-            <option value="">All semesters</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="academicYear">Academic year of study</label>
-          <select id="academicYear">
-            <option value="">All years of study</option>
-          </select>
-        </div>
+      <div class="search-actions">
+        <button type="button" class="primary" id="searchButton">
+          Search
+        </button>
+        <button type="button" class="secondary" id="clear">
+          Clear
+        </button>
       </div>
 
-      <div class="actions">
-        <button type="button" id="searchButton">Search Resources</button>
-        <button type="button" id="clear">Clear Filters</button>
-      </div>
+      <details>
+        <summary>Advanced filters</summary>
+        <div class="filters">
+          <div>
+            <label for="category">Resource type</label>
+            <select id="category">
+              <option value="">All resource types</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="unit">Unit code</label>
+            <select id="unit">
+              <option value="">All units</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="examYear">Examination year</label>
+            <select id="examYear">
+              <option value="">All available years</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="semester">Semester</label>
+            <select id="semester">
+              <option value="">All semesters</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="academicYear">Year of study</label>
+            <select id="academicYear">
+              <option value="">All years of study</option>
+            </select>
+          </div>
+        </div>
+      </details>
     </section>
 
     <p id="summary" aria-live="polite">Loading resource catalogue...</p>
@@ -305,17 +382,20 @@
     const summary = document.getElementById("summary");
 
     let resources = [];
+    let selectedPaperCode = "";
 
     function norm(value) {
       return String(value ?? "")
         .normalize("NFKC")
-        .toLowerCase()
-        .trim();
+        .toUpperCase()
+        .trim()
+        .replace(/\s+/g, "-");
     }
 
     function unique(values) {
-      return [...new Set(values.filter(v =>
-        v !== null && v !== undefined && String(v).trim() !== ""
+      return [...new Set(values.filter(value =>
+        value !== null && value !== undefined &&
+        String(value).trim() !== ""
       ))];
     }
 
@@ -331,7 +411,7 @@
       select.replaceChildren();
       addOption(select, "", placeholder);
 
-      let list = unique(values);
+      const list = unique(values);
       if (sorter) list.sort(sorter);
       else list.sort((a, b) =>
         String(a).localeCompare(String(b), undefined, {
@@ -347,91 +427,147 @@
       }
     }
 
+    function getUnitCode(resource) {
+      const raw = resource.unitCode || "";
+      return norm(raw).replace(/-/g, "");
+    }
+
+    function getPaperCode(resource) {
+      if (resource.paperCode) {
+        return norm(resource.paperCode);
+      }
+
+      const unit = norm(resource.unitCode || "");
+      const year = String(resource.examYear || "");
+
+      if (
+        resource.category === "Past Papers" &&
+        unit && /^\d{4}$/.test(year)
+      ) {
+        return `${unit}-${year}`;
+      }
+
+      // Also recognize codes written in a title or filename.
+      const source = `${resource.title || ""} ${resource.filePath || ""}`;
+      const match = source.match(
+        /\b((?:MAC|MMA|MIT|BEC|MAS)-?\d{3}-\d{4})\b/i
+      );
+
+      return match ? norm(match[1]) : "";
+    }
+
+    function getSearchText(resource) {
+      return norm([
+        resource.title,
+        resource.paperCode,
+        getPaperCode(resource),
+        resource.unitCode,
+        resource.examYear,
+        resource.semester,
+        resource.academicYear,
+        resource.category,
+        resource.description,
+        resource.fileType,
+        ...(resource.keywords || [])
+      ].join(" "));
+    }
+
     function getAvailableOptions() {
       const category = categoryInput.value;
       const unit = unitInput.value;
 
-      const categoryResources = resources.filter(r =>
-        !category || r.category === category
-      );
-
-      const unitResources = categoryResources.filter(r =>
-        !unit || r.unitCode === unit
+      const categoryResources = resources.filter(resource =>
+        !category || resource.category === category
       );
 
       fillSelect(
         categoryInput,
         "All resource types",
-        resources.map(r => r.category)
+        resources.map(resource => resource.category)
       );
 
       fillSelect(
         unitInput,
         "All units",
-        categoryResources.map(r => r.unitCode)
+        categoryResources.map(resource => resource.unitCode)
       );
 
-      // Re-read the selected unit after refreshing its options.
       const selectedUnit = unitInput.value;
-      const selectedResources = categoryResources.filter(r =>
-        !selectedUnit || r.unitCode === selectedUnit
+
+      const selectedResources = categoryResources.filter(resource =>
+        !selectedUnit || resource.unitCode === selectedUnit
       );
 
       fillSelect(
         examYearInput,
         "All available years",
         selectedResources
-          .filter(r => r.category === "Past Papers" && r.examYear)
-          .map(r => Number(r.examYear)),
+          .filter(resource =>
+            resource.category === "Past Papers" && resource.examYear
+          )
+          .map(resource => Number(resource.examYear)),
         (a, b) => b - a
       );
 
       fillSelect(
         semesterInput,
         "All semesters",
-        selectedResources.map(r => r.semester)
+        selectedResources.map(resource => resource.semester)
       );
 
       fillSelect(
         academicYearInput,
         "All years of study",
-        selectedResources.map(r => r.academicYear)
+        selectedResources.map(resource => resource.academicYear)
       );
     }
 
     function currentMatches() {
-      const terms = norm(queryInput.value).split(/\s+/).filter(Boolean);
+      const rawQuery = queryInput.value.trim();
+      const query = norm(rawQuery);
       const category = categoryInput.value;
       const unit = unitInput.value;
       const examYear = examYearInput.value;
       const semester = semesterInput.value;
       const academicYear = academicYearInput.value;
 
-      return resources.filter(r => {
-        const searchable = norm([
-          r.title, r.unitCode, r.examYear, r.semester,
-          r.academicYear, r.category, r.description,
-          r.fileType, ...(r.keywords || [])
-        ].join(" "));
+      // A full unique paper code must match exactly.
+      const isFullPaperCode =
+        /^(MAC|MMA|MIT|BEC|MAS)-?\d{3}-\d{4}$/.test(query);
 
-        return terms.every(term => searchable.includes(term))
-          && (!category || r.category === category)
-          && (!unit || r.unitCode === unit)
+      return resources.filter(resource => {
+        const paperCode = getPaperCode(resource);
+
+        if (isFullPaperCode && paperCode !== query) {
+          return false;
+        }
+
+        const searchable = getSearchText(resource);
+
+        const queryMatches = !query || (
+          isFullPaperCode
+            ? paperCode === query
+            : searchable.includes(query)
+        );
+
+        return queryMatches
+          && (!category || resource.category === category)
+          && (!unit || resource.unitCode === unit)
           && (!examYear || (
-            r.category === "Past Papers" &&
-            Number(r.examYear) === Number(examYear)
+            resource.category === "Past Papers" &&
+            Number(resource.examYear) === Number(examYear)
           ))
-          && (!semester || r.semester === semester)
-          && (!academicYear || r.academicYear === academicYear);
+          && (!semester || resource.semester === semester)
+          && (!academicYear || resource.academicYear === academicYear);
       });
     }
 
     function textElement(parent, tag, value, className) {
-      const el = document.createElement(tag);
-      el.textContent = value || "";
-      if (className) el.className = className;
-      parent.appendChild(el);
-      return el;
+      const element = document.createElement(tag);
+      element.textContent = value || "";
+      if (className) element.className = className;
+      parent.appendChild(element);
+      return element;
     }
 
     function renderResults() {
@@ -443,42 +579,57 @@
 
       if (!matches.length) {
         textElement(
-          resultsBox, "div",
+          resultsBox,
+          "div",
           resources.length
-            ? "No matching resources. Try changing your keywords or filters."
-            : "The resource catalogue is empty. Administrators must add approved resources.",
+            ? "No matching resources found. Check the code or try another keyword."
+            : "No resources are listed yet. Administrators must add resources to the catalogue.",
           "empty"
         );
         return;
       }
 
-      matches.forEach(r => {
+      matches.forEach(resource => {
         const card = document.createElement("article");
         card.className = "resource-card";
 
-        textElement(card, "h3", r.title);
+        const code = getPaperCode(resource);
 
-        textElement(card, "p", [
-          r.unitCode,
-          r.academicYear,
-          r.semester
-        ].filter(Boolean).join(" | ") || "General resource");
+        textElement(card, "h3", code || resource.title);
 
-        textElement(card, "span", r.category, "tag");
-
-        if (r.examYear) {
-          textElement(card, "span", `Exam: ${r.examYear}`, "tag");
+        if (code && resource.title && norm(resource.title) !== code) {
+          textElement(card, "p", resource.title);
         }
 
-        if (r.fileType) {
-          textElement(card, "span", r.fileType, "tag");
+        textElement(
+          card,
+          "p",
+          [
+            resource.unitCode,
+            resource.academicYear,
+            resource.semester
+          ].filter(Boolean).join(" | ") || "General resource"
+        );
+
+        textElement(card, "span", resource.category, "tag");
+
+        if (resource.examYear) {
+          textElement(card, "span", `Exam: ${resource.examYear}`, "tag");
         }
 
-        textElement(card, "p", r.description || "No description available.");
+        if (resource.fileType) {
+          textElement(card, "span", resource.fileType, "tag");
+        }
+
+        textElement(
+          card,
+          "p",
+          resource.description || "No description available."
+        );
 
         const link = document.createElement("a");
         link.className = "download";
-        link.href = r.filePath;
+        link.href = resource.filePath;
         link.textContent = "Open / Download resource";
         link.target = "_blank";
         link.rel = "noopener noreferrer";
@@ -492,30 +643,59 @@
       suggestionsBox.replaceChildren();
 
       const query = norm(queryInput.value);
-      if (!query) return;
+      if (!query) {
+        suggestionsBox.classList.remove("show");
+        return;
+      }
 
-      const terms = unique(resources.flatMap(r => [
-        r.unitCode, r.title, ...(r.keywords || [])
-      ]));
+      const papers = resources
+        .filter(resource => resource.category === "Past Papers")
+        .map(resource => ({
+          code: getPaperCode(resource),
+          resource
+        }))
+        .filter(item => item.code);
 
-      const matches = terms
-        .filter(item => norm(item).includes(query))
-        .slice(0, 6);
+      const uniquePapers = [
+        ...new Map(papers.map(item => [item.code, item])).values()
+      ];
+
+      const matches = uniquePapers
+        .filter(item => item.code.includes(query))
+        .sort((a, b) => a.code.localeCompare(b.code))
+        .slice(0, 8);
+
+      if (!matches.length) {
+        suggestionsBox.classList.remove("show");
+        return;
+      }
 
       matches.forEach(item => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "suggestion";
-        button.textContent = item;
+        button.setAttribute("role", "option");
+
+        const strong = document.createElement("strong");
+        strong.textContent = item.code;
+        button.appendChild(strong);
+
+        const small = document.createElement("small");
+        small.textContent = "Available past paper";
+        button.appendChild(small);
 
         button.addEventListener("click", () => {
-          queryInput.value = item;
+          queryInput.value = item.code;
+          selectedPaperCode = item.code;
           suggestionsBox.replaceChildren();
+          suggestionsBox.classList.remove("show");
           renderResults();
         });
 
         suggestionsBox.appendChild(button);
       });
+
+      suggestionsBox.classList.add("show");
     }
 
     function refresh() {
@@ -525,27 +705,53 @@
     }
 
     queryInput.addEventListener("input", () => {
+      selectedPaperCode = "";
       renderSuggestions();
       renderResults();
     });
 
+    queryInput.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        suggestionsBox.classList.remove("show");
+      }
+
+      if (event.key === "Enter") {
+        event.preventDefault();
+        suggestionsBox.classList.remove("show");
+        renderResults();
+      }
+    });
+
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".search-wrap")) {
+        suggestionsBox.classList.remove("show");
+      }
+    });
+
     [
-      categoryInput, unitInput, examYearInput,
-      semesterInput, academicYearInput
+      categoryInput,
+      unitInput,
+      examYearInput,
+      semesterInput,
+      academicYearInput
     ].forEach(select => {
       select.addEventListener("change", refresh);
     });
 
-    document.getElementById("searchButton")
-      .addEventListener("click", renderResults);
+    document.getElementById("searchButton").addEventListener("click", () => {
+      suggestionsBox.classList.remove("show");
+      renderResults();
+    });
 
     document.getElementById("clear").addEventListener("click", () => {
       queryInput.value = "";
+      selectedPaperCode = "";
       categoryInput.value = "";
       unitInput.value = "";
       examYearInput.value = "";
       semesterInput.value = "";
       academicYearInput.value = "";
+      suggestionsBox.classList.remove("show");
       refresh();
       queryInput.focus();
     });
@@ -564,24 +770,28 @@
           throw new Error("The resource catalogue must be a JSON array.");
         }
 
-        resources = data.filter(r =>
-          r && typeof r.title === "string" &&
-          typeof r.category === "string" &&
-          typeof r.filePath === "string" &&
-          !r.filePath.startsWith("/") &&
-          !r.filePath.includes("..") &&
-          !/^[a-z][a-z0-9+.-]*:/i.test(r.filePath)
+        resources = data.filter(resource =>
+          resource &&
+          typeof resource.title === "string" &&
+          typeof resource.category === "string" &&
+          typeof resource.filePath === "string" &&
+          !resource.filePath.startsWith("/") &&
+          !resource.filePath.includes("..") &&
+          !/^[a-z][a-z0-9+.-]*:/i.test(resource.filePath)
         );
 
         refresh();
       } catch (error) {
         summary.textContent = "Unable to load the resource catalogue.";
         resultsBox.replaceChildren();
+
         textElement(
-          resultsBox, "div",
+          resultsBox,
+          "div",
           "Check that resources.json exists in the repository root and contains valid JSON.",
           "empty"
         );
+
         console.error(error);
       }
     }
