@@ -1,0 +1,26 @@
+
+{
+  "MAC": [
+    "MAC 102", "MAC 104", "MAC 107", "MAC 201", "MAC 203",
+    "MAC 206", "MAC 210", "MAC 300", "MAC 302", "MAC 303",
+    "MAC 304", "MAC 305", "MAC 306", "MAC 403", "MAC 405",
+    "MAC 407", "MAC 409", "MAC 415"
+  ],
+  "MMA": [
+    "MMA 100", "MMA 101", "MMA 102", "MMA 103", "MMA 200",
+    "MMA 201", "MMA 202", "MMA 216", "MMA 300", "MMA 301",
+    "MMA 303", "MMA 405"
+  ],
+  "MIT": [
+    "MIT 101", "MIT 102", "MIT 201", "MIT 202",
+    "MIT 302", "MIT 303", "MIT 401"
+  ],
+  "BEC": [
+    "BEC 111", "BEC 121"
+  ],
+  "MAS": [
+    "MAS 101", "MAS 102", "MAS 103", "MAS 201",
+    "MAS 202", "MAS 203", "MAS 204", "MAS 303",
+    "MAS 304", "MAS 305", "MAS 317"
+  ]
+}
